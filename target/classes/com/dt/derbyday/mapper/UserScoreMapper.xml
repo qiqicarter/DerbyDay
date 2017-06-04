@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dt.derbyday.mapper.UserScoreMapper">
+  <resultMap id="BaseResultMap" type="com.dt.derbyday.model.UserScore">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="game" jdbcType="VARCHAR" property="game" />
+    <result column="user" jdbcType="INTEGER" property="user" />
+    <result column="nick" jdbcType="VARCHAR" property="nick" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, game, user, nick, score
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_score
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectRank" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_score
+    where game = #{game,jdbcType=VARCHAR} ORDER BY score desc LIMIT 0,10
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_score
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dt.derbyday.model.UserScore">
+    insert into user_score (id, game, user, 
+      nick, score)
+    values (#{id,jdbcType=INTEGER}, #{game,jdbcType=VARCHAR}, #{user,jdbcType=INTEGER}, 
+      #{nick,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dt.derbyday.model.UserScore">
+    insert into user_score
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="game != null">
+        game,
+      </if>
+      <if test="user != null">
+        user,
+      </if>
+      <if test="nick != null">
+        nick,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="game != null">
+        #{game,jdbcType=VARCHAR},
+      </if>
+      <if test="user != null">
+        #{user,jdbcType=INTEGER},
+      </if>
+      <if test="nick != null">
+        #{nick,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dt.derbyday.model.UserScore">
+    update user_score
+    <set>
+      <if test="game != null">
+        game = #{game,jdbcType=VARCHAR},
+      </if>
+      <if test="user != null">
+        user = #{user,jdbcType=INTEGER},
+      </if>
+      <if test="nick != null">
+        nick = #{nick,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dt.derbyday.model.UserScore">
+    update user_score
+    set game = #{game,jdbcType=VARCHAR},
+      user = #{user,jdbcType=INTEGER},
+      nick = #{nick,jdbcType=VARCHAR},
+      score = #{score,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateScoreBatch" parameterType="com.dt.derbyday.dto.AddScore">
+    update user_score
+    set score = score+#{score,jdbcType=INTEGER}
+    where id in (#{inStr,jdbcType=VARCHAR})
+  </update>
+  
+  <update id="updateScoreByUserId" parameterType="com.dt.derbyday.model.UserScore">
+    update user_score
+    set score = score+#{score,jdbcType=INTEGER}
+    where user = #{user,jdbcType=INTEGER}
+  </update>
+</mapper>
