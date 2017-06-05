@@ -1,91 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dt.derbyday.mapper.QuestionMapper">
-  <resultMap id="BaseResultMap" type="com.dt.derbyday.model.Question">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="game" jdbcType="VARCHAR" property="game" />
-    <result column="question" jdbcType="VARCHAR" property="question" />
-    <result column="max_choice" jdbcType="INTEGER" property="maxChoice" />
-    <result column="seq" jdbcType="INTEGER" property="seq" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, game, question,max_choice, seq
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from question
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  
-  <select id="selectByGame" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from question
-    where game = #{game,jdbcType=INTEGER} order by seq
-  </select>
-  
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from question
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.dt.derbyday.model.Question">
-    insert into question (id, game, question, 
-      seq)
-    values (#{id,jdbcType=INTEGER}, #{game,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, 
-      #{seq,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" parameterType="com.dt.derbyday.model.Question">
-    insert into question
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="game != null">
-        game,
-      </if>
-      <if test="question != null">
-        question,
-      </if>
-      <if test="seq != null">
-        seq,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="game != null">
-        #{game,jdbcType=VARCHAR},
-      </if>
-      <if test="question != null">
-        #{question,jdbcType=VARCHAR},
-      </if>
-      <if test="seq != null">
-        #{seq,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.dt.derbyday.model.Question">
-    update question
-    <set>
-      <if test="game != null">
-        game = #{game,jdbcType=VARCHAR},
-      </if>
-      <if test="question != null">
-        question = #{question,jdbcType=VARCHAR},
-      </if>
-      <if test="seq != null">
-        seq = #{seq,jdbcType=INTEGER},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.dt.derbyday.model.Question">
-    update question
-    set game = #{game,jdbcType=VARCHAR},
-      question = #{question,jdbcType=VARCHAR},
-      seq = #{seq,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+	<resultMap id="BaseResultMap" type="com.dt.derbyday.model.Question">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="game" jdbcType="VARCHAR" property="game" />
+		<result column="question" jdbcType="VARCHAR" property="question" />
+		<result column="max_choice" jdbcType="INTEGER" property="maxChoice" />
+		<result column="seq" jdbcType="INTEGER" property="seq" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, game, question,max_choice, seq
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from question
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByGame" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from question
+		where game = #{game,jdbcType=INTEGER} order by seq
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from question
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.dt.derbyday.model.Question">
+		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into question (id, game, question,
+		seq)
+		values (#{id,jdbcType=INTEGER}, #{game,jdbcType=VARCHAR},
+		#{question,jdbcType=VARCHAR},
+		#{seq,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.dt.derbyday.model.Question">
+		insert into question
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="game != null">
+				game,
+			</if>
+			<if test="question != null">
+				question,
+			</if>
+			<if test="seq != null">
+				seq,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="game != null">
+				#{game,jdbcType=VARCHAR},
+			</if>
+			<if test="question != null">
+				#{question,jdbcType=VARCHAR},
+			</if>
+			<if test="seq != null">
+				#{seq,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dt.derbyday.model.Question">
+		update question
+		<set>
+			<if test="game != null">
+				game = #{game,jdbcType=VARCHAR},
+			</if>
+			<if test="question != null">
+				question = #{question,jdbcType=VARCHAR},
+			</if>
+			<if test="seq != null">
+				seq = #{seq,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dt.derbyday.model.Question">
+		update question
+		set game = #{game,jdbcType=VARCHAR},
+		question = #{question,jdbcType=VARCHAR},
+		seq = #{seq,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
 </mapper>

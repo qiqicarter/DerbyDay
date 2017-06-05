@@ -2,7 +2,10 @@ package com.dt.derbyday.service;
 
 import java.util.List;
 
+import com.dt.derbyday.dto.UserScoreDisplay;
+import com.dt.derbyday.model.Choice;
 import com.dt.derbyday.model.GameInfo;
+import com.dt.derbyday.model.Question;
 
 public interface ManageService {
 
@@ -11,4 +14,12 @@ public interface ManageService {
 	void deleteGame(int id);
 	
 	List<GameInfo> getGames();
+	
+	void createQuestion(Question question);
+	
+	void createChoice(Choice choice);
+	
+	void createWholeQuestion(Question question,List<Choice> choices);
+	
+	List<UserScoreDisplay> getUserScoreRank(String game);
 }

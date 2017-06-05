@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dt.derbyday.dto.AddScore;
 import com.dt.derbyday.dto.UserChoiceDisplay;
+import com.dt.derbyday.dto.UserScoreDisplay;
 import com.dt.derbyday.mapper.ChoiceMapper;
 import com.dt.derbyday.mapper.GameInfoMapper;
 import com.dt.derbyday.mapper.GameResultMapper;
@@ -46,6 +47,10 @@ public class GameServiceImpl implements GameService {
 	public GameInfo getGameInfoByGame(String code) {
 		return gameMapper.selectByGame(code);
 	}
+	
+	public GameInfo getGameInfoByTime(){
+		return gameMapper.selectByTime();
+	}
 
 	public List<Question> getQuestionByGame(String game) {
 		return questionMapper.selectByGame(game);
@@ -69,7 +74,7 @@ public class GameServiceImpl implements GameService {
 		return userChoiceMapper.selectHistory(uc);
 	}
 
-	public List<UserScore> getRankByGame(String game) {
+	public List<UserScoreDisplay> getRankByGame(String game) {
 		return userScoreMapper.selectRank(game);
 	}
 

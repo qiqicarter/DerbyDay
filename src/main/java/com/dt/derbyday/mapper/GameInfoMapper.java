@@ -18,6 +18,8 @@ public interface GameInfoMapper {
     
     GameInfo selectByGame(String game);
     
+    GameInfo selectByTime();
+    
     List<GameInfo> selectAllGame();
 
     int updateByPrimaryKeySelective(GameInfo record);

@@ -139,7 +139,8 @@ public class GameController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
 		try {
-			GameInfo gameInfo = gameService.getGameInfoByGame(game);
+//			GameInfo gameInfo = gameService.getGameInfoByGame(game);
+			GameInfo gameInfo = gameService.getGameInfoByTime();
 
 			if (gameInfo == null) {
 				resultMap.put("code", 500);
@@ -147,18 +148,18 @@ public class GameController {
 
 				return resultMap;
 			}
-			if (gameInfo.getStartDate().after(new Date())) {
-				resultMap.put("code", 500);
-				resultMap.put("message", "活动尚未开始！");
-
-				return resultMap;
-			}
-			if (gameInfo.getEndDate().before(new Date())) {
-				resultMap.put("code", 501);
-				resultMap.put("message", "活动已经结束！");
-
-				return resultMap;
-			}
+//			if (gameInfo.getStartDate().after(new Date())) {
+//				resultMap.put("code", 500);
+//				resultMap.put("message", "活动尚未开始！");
+//
+//				return resultMap;
+//			}
+//			if (gameInfo.getEndDate().before(new Date())) {
+//				resultMap.put("code", 501);
+//				resultMap.put("message", "活动已经结束！");
+//
+//				return resultMap;
+//			}
 
 			// String openId = WeixinUtils.getWechatOpenIdByCode(code);
 			String openId = code;
@@ -177,6 +178,7 @@ public class GameController {
 
 			List<UserChoiceDisplay> historyList = gameService.getUserChoiceHistory(game, user.getId());
 			if (historyList != null && historyList.size() > 0) {
+				resultMap.put("info", gameInfo);
 				resultMap.put("code", 502);// 502的时候，去getGameHistory
 				resultMap.put("message", "您已经参与过活动了！");
 				resultMap.put("token", openId);
@@ -357,6 +359,11 @@ public class GameController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
 		try {
+			ConfigUtil config = new ConfigUtil();
+			String color = config.getProperty("bgc");
+			
+			resultMap.put("color", color);
+					
 			UserInfo user = userSerivce.queryUserByOpenId(token);
 			if (user != null) {
 				resultMap.put("code", 200);
@@ -476,8 +483,36 @@ public class GameController {
 	}
 
 	public static void main(String[] args) {
-		String c = "{\"game\":\"shanghai\",\"choices\":[{\"question\":1,\"choice\":1},{\"question\":2,\"choice\":8}]}";
-
-		JSON.parseObject(c);
+		Question q = new Question();
+		q.setGame("111");
+		q.setMaxChoice(5);
+		q.setQuestion("test");
+		q.setSeq(1);
+		List<Choice> choices = new ArrayList<Choice>();
+		Choice c = new Choice();
+		c.setChoice("c1");
+		c.setScore(2);
+		c.setSeq(1);
+		
+		Choice cc = new Choice();
+		cc.setChoice("c2");
+		cc.setScore(2);
+		cc.setSeq(3);
+		
+		Choice ccc = new Choice();
+		ccc.setChoice("c3");
+		ccc.setScore(2);
+		ccc.setSeq(2);
+		choices.add(cc);
+		choices.add(c);
+		choices.add(ccc);
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		resultMap.put("question", q);
+		resultMap.put("choices", choices);
+		
+		String jsonString = JSON.toJSONString(resultMap);
+		System.out.println(jsonString+"");
 	}
 }

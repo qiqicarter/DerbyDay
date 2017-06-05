@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.dt.derbyday.dto.AddScore;
 import com.dt.derbyday.dto.UserChoiceDisplay;
+import com.dt.derbyday.dto.UserScoreDisplay;
 import com.dt.derbyday.model.Choice;
 import com.dt.derbyday.model.GameInfo;
 import com.dt.derbyday.model.GameResult;
@@ -15,6 +16,8 @@ public interface GameService {
 
 	GameInfo getGameInfoByGame(String game);
 	
+	GameInfo getGameInfoByTime();
+	
 	List<Question> getQuestionByGame(String game);
 	
 	List<Choice> getChoiceByQuestionId(Integer questionId);
@@ -25,7 +28,7 @@ public interface GameService {
 	
 	List<UserChoiceDisplay> getUserChoiceHistory(String game,int userId);
 	
-	List<UserScore> getRankByGame(String game);
+	List<UserScoreDisplay> getRankByGame(String game);
 	
 	List<UserChoice> getUserChoiceByResult(UserChoice uc);
 	
