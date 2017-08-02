@@ -44,6 +44,24 @@ public class GameController {
 
 	@Autowired
 	private UserService userSerivce;
+	
+	@GetMapping("/getOpenIdByCode")
+	public Map<String, Object> getOpenIdByCode(@RequestParam(required = false) String code,
+			@RequestParam(required = false) String game, HttpServletRequest request, HttpServletResponse response) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		String openId = WeixinUtils.getXcxOpenIdByCode(code);
+		if(openId!=null) {
+			resultMap.put("code", 200);
+			resultMap.put("message", "OK");
+			resultMap.put("token", openId);
+		}else {
+			resultMap.put("code", 500);
+			resultMap.put("message", "error");
+		}
+		
+		return resultMap;
+	}
 
 	@GetMapping("/startGame")
 	public void startGame(@RequestParam(required = false) String game, HttpServletRequest request,

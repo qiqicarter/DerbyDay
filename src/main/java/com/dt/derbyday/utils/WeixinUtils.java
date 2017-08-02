@@ -54,6 +54,27 @@ public class WeixinUtils {
 			return null;
 		}
 	}
+	
+	public static String getXcxOpenIdByCode(String code) {
+		try {
+			String appid_sj = WechatData.APP_ID;
+			String appsecret_sj = WechatData.APP_SECRET;
+
+			String URL = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appid_sj.trim() + "&secret="
+					+ appsecret_sj.trim() + "&js_code=" + code + "&grant_type=authorization_code";
+
+			String tempValue = HttpUtils.doGet(URL);
+			JSONObject jsonObj = JSON.parseObject(tempValue);
+			if (jsonObj.containsKey("errcode")) {
+				return null;
+			}
+			
+			return jsonObj.getString("openid");
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	public static HashMap<String, String> getUserinfoByOpenId(String openId) throws Exception {
 		HashMap<String, String> params = new HashMap<String, String>();
