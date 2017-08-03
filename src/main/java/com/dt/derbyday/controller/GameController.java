@@ -151,8 +151,7 @@ public class GameController {
 	}
 
 	@GetMapping("/guessing")
-	public Map<String, Object> wxAppGetGame(@RequestParam(required = false) String code,
-			@RequestParam(required = false) String game, HttpServletRequest request, HttpServletResponse response) {
+	public Map<String, Object> wxAppGetGame(@RequestParam(required = false) String code,HttpServletRequest request, HttpServletResponse response) {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -194,7 +193,7 @@ public class GameController {
 				return resultMap;
 			}
 
-			List<UserChoiceDisplay> historyList = gameService.getUserChoiceHistory(game, user.getId());
+			List<UserChoiceDisplay> historyList = gameService.getUserChoiceHistory(gameInfo.getGame(), user.getId());
 			if (historyList != null && historyList.size() > 0) {
 				resultMap.put("info", gameInfo);
 				resultMap.put("code", 502);// 502的时候，去getGameHistory
@@ -203,7 +202,7 @@ public class GameController {
 				return resultMap;
 			}
 
-			List<Question> questions = gameService.getQuestionByGame(game);
+			List<Question> questions = gameService.getQuestionByGame(gameInfo.getGame());
 
 			resultMap.put("code", 200);
 			resultMap.put("message", "OK");
