@@ -35,13 +35,13 @@
     select 
     <include refid="Base_Column_List" />
     from user_choice
-    where game=#{game,jdbcType=VARCHAR} AND question=#{questionId,jdbcType=INTEGER} AND choice in #{choice,jdbcType=VARCHAR}
+    where question=#{questionId,jdbcType=INTEGER} AND choice in (${choice})
   </select>
   <select id="selectByGameAndNoQuestion" parameterType="com.dt.derbyday.dto.UserChoiceDisplay" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from user_choice
-    where game=#{game,jdbcType=VARCHAR} AND question=#{questionId,jdbcType=INTEGER} AND choice not in #{choice,jdbcType=VARCHAR}
+    where question=#{questionId,jdbcType=INTEGER} AND choice not in (${choice})
   </select>
   <select id="selectHistory" parameterType="com.dt.derbyday.model.UserChoice" resultMap="DisplayResultMap">
   	SELECT q.id as question_id,q.question,c.choice,q.seq FROM user_choice uc,question q,choice c WHERE uc.question=q.id AND uc.choice=c.id AND uc.game=#{game,jdbcType=VARCHAR} AND user_id=#{userId,jdbcType=INTEGER} order by q.seq;

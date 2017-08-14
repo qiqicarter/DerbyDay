@@ -117,4 +117,9 @@ public class GameServiceImpl implements GameService {
 		}
 
 	}
+
+	@Override
+	public Question getQuestionById(Integer questionId) {
+		return questionMapper.selectByPrimaryKey(questionId);
+	}
 }

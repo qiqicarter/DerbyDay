@@ -258,6 +258,13 @@ public class GameController {
 			resultMap.put("message", "您已经参加过此竞猜！");
 			return resultMap;
 		}
+		
+		if("undefined".equals(game)) {
+			JSONObject jo = (JSONObject) jsonArray.get(0);
+			int qid = jo.getInteger("question");
+			Question tempQuestion = gameService.getQuestionById(qid);
+			game = tempQuestion.getGame();
+		}
 
 		for (int i = 0; i < jsonArray.size(); i++) {
 			UserChoice uc = new UserChoice();
@@ -460,6 +467,7 @@ public class GameController {
 		AddScore as = new AddScore();
 		as.setInStr(inStr);
 		as.setScore(tempScore);
+		as.setGame(game);
 
 		gameService.updateUserScore(as);
 	}
@@ -467,7 +475,7 @@ public class GameController {
 	private void updateMutiChoice(String[] ss, int questionId, String game) {
 		UserChoiceDisplay uc = new UserChoiceDisplay();
 		uc.setQuestionId(questionId);
-		String choice = null;
+		String choice = "";
 		for (String s : ss) {
 			choice = choice + s + ",";
 		}
@@ -481,7 +489,7 @@ public class GameController {
 	private void updateMutiWrongChoice(String[] ss, int questionId, String game) {
 		UserChoiceDisplay uc = new UserChoiceDisplay();
 		uc.setQuestionId(questionId);
-		String choice = null;
+		String choice = "";
 		for (String s : ss) {
 			choice = choice + s + ",";
 		}

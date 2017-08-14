@@ -20,6 +20,8 @@ public interface GameService {
 	
 	List<Question> getQuestionByGame(String game);
 	
+	Question getQuestionById(Integer questionId);
+	
 	List<Choice> getChoiceByQuestionId(Integer questionId);
 	
 	Choice getChoiceById(Integer id);

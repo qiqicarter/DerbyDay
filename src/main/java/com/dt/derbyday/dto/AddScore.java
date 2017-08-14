@@ -4,6 +4,7 @@ public class AddScore {
 
 	private String inStr;
 	private int score;
+	private String game;
 	public String getInStr() {
 		return inStr;
 	}
@@ -15,6 +16,12 @@ public class AddScore {
 	}
 	public void setScore(int score) {
 		this.score = score;
+	}
+	public String getGame() {
+		return game;
+	}
+	public void setGame(String game) {
+		this.game = game;
 	}
 	
 }

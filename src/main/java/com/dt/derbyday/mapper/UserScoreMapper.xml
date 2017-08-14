@@ -111,7 +111,7 @@
 	<update id="updateScoreBatch" parameterType="com.dt.derbyday.dto.AddScore">
 		update user_score
 		set score = score+#{score,jdbcType=INTEGER}
-		where id in (#{inStr,jdbcType=VARCHAR})
+		where user in (${inStr}) and game=#{game,jdbcType=VARCHAR}
 	</update>
 
 	<update id="updateScoreByUserId" parameterType="com.dt.derbyday.model.UserScore">
