@@ -17,6 +17,8 @@ public interface ManageService {
 	
 	void createQuestion(Question question);
 	
+	void deleteQuestion(int id);
+	
 	void createChoice(Choice choice);
 	
 	void createWholeQuestion(Question question,List<Choice> choices);

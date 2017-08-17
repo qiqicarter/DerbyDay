@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.dt.derbyday.dto.QuestionDto;
 import com.dt.derbyday.model.Choice;
 import com.dt.derbyday.model.GameInfo;
 import com.dt.derbyday.model.Question;
+import com.dt.derbyday.service.GameService;
 import com.dt.derbyday.service.ManageService;
 
 @RestController
@@ -32,6 +34,9 @@ public class ManageController {
 	@Autowired
 	ManageService manageService;
 
+	@Autowired
+	private GameService gameService;
+	
 	@PostMapping("/createGame")
 	public Map<String, Object> createGame(@RequestParam(required = true) String game,
 			@RequestParam(required = true) String title, @RequestParam(required = true) String picUrl,
@@ -127,6 +132,38 @@ public class ManageController {
 			
 			resultMap.put("code", 200);
 			resultMap.put("message", "OK");
+		} catch (Exception e) {
+			resultMap.put("code", 500);
+			resultMap.put("message", e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return resultMap;
+	}
+	
+	@PostMapping("/getQuestions")
+	public Map<String, Object> getQuestions(@RequestParam(required = true) String game,HttpServletRequest request, HttpServletResponse response){
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		List<QuestionDto> list = new ArrayList<QuestionDto>();
+		
+		try {
+			List<Question> questions = gameService.getQuestionByGame(game);
+			for(Question q : questions) {
+				List<Choice> choices = gameService.getChoiceByQuestionId(q.getId());
+				QuestionDto dto =  new QuestionDto();
+				dto.setChoices(choices);
+				dto.setGame(game);
+				dto.setId(q.getId());
+				dto.setMaxChoice(q.getMaxChoice());
+				dto.setQuestion(q.getQuestion());
+				dto.setSeq(q.getSeq());
+				
+				list.add(dto);
+			}
+			resultMap.put("code", 200);
+			resultMap.put("message", "OK");
+			resultMap.put("data", list);
 		} catch (Exception e) {
 			resultMap.put("code", 500);
 			resultMap.put("message", e.getMessage());

@@ -29,7 +29,7 @@
 	<select id="selectRank" parameterType="java.lang.String"
 		resultMap="UserScoreDisplayMap">
 		select
-		us.score as score,ui.nick as username,ui.phone as phone,ui,address as address
+		us.score as score,ui.nick as username,ui.phone as phone,ui.address as address
 		from user_score us,user_info ui
 		where us.user=ui.id and game = #{game,jdbcType=VARCHAR} ORDER BY score desc LIMIT 0,10
 	</select>
