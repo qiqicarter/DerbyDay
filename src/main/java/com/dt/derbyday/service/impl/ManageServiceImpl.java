@@ -78,4 +78,9 @@ public class ManageServiceImpl implements ManageService{
 		questionMapper.deleteByPrimaryKey(id);
 	}
 
+	@Override
+	public void deleteChoice(int id) {
+		choiceMapper.deleteByPrimaryKey(id);
+	}
+
 }

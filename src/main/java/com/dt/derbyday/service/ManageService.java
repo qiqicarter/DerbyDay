@@ -21,6 +21,8 @@ public interface ManageService {
 	
 	void createChoice(Choice choice);
 	
+	void deleteChoice(int id);
+	
 	void createWholeQuestion(Question question,List<Choice> choices);
 	
 	List<UserScoreDisplay> getUserScoreRank(String game);

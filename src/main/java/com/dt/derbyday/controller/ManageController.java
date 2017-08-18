@@ -169,7 +169,47 @@ public class ManageController {
 			resultMap.put("message", e.getMessage());
 			e.printStackTrace();
 		}
+		return resultMap;
+	}
+	
+	@PostMapping("/delQuestion")
+	public Map<String, Object> delQuestion(@RequestParam(required = true) String guestionId,HttpServletRequest request, HttpServletResponse response){
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
+		try {
+			manageService.deleteQuestion(Integer.parseInt(guestionId));
+			List<Choice> choices = gameService.getChoiceByQuestionId(Integer.parseInt(guestionId));
+			for(Choice c : choices) {
+				manageService.deleteChoice(c.getId());
+			}
+			resultMap.put("code", 200);
+			resultMap.put("message", "OK");
+		} catch (Exception e) {
+			resultMap.put("code", 500);
+			resultMap.put("message", e.getMessage());
+			e.printStackTrace();
+		}
+		return resultMap;
+	}
+	
+	@PostMapping("/login")
+	public Map<String, Object> login(@RequestParam(required = true) String user,@RequestParam(required = true) String pass,HttpServletRequest request, HttpServletResponse response){
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			if(user.equals("admin") && pass.toUpperCase().equals("0192023A7BBD73250516F069DF18B500")) {
+				resultMap.put("data", true);
+			}else {
+				resultMap.put("data", false);
+			}
+			resultMap.put("code", 200);
+			resultMap.put("message", "OK");
+		} catch (Exception e) {
+			resultMap.put("code", 500);
+			resultMap.put("message", e.getMessage());
+			e.printStackTrace();
+		}
 		return resultMap;
 	}
 }
