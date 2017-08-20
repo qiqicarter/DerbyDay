@@ -200,6 +200,7 @@ public class ManageController {
 		try {
 			if(user.equals("admin") && pass.toUpperCase().equals("0192023A7BBD73250516F069DF18B500")) {
 				resultMap.put("data", true);
+				resultMap.put("token", "0192023A7B");
 			}else {
 				resultMap.put("data", false);
 			}
