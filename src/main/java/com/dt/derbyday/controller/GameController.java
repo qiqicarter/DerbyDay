@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -418,7 +419,7 @@ public class GameController {
 			if (user == null) {
 				UserInfo newUser = new UserInfo();
 				newUser.setAddress(address);
-				newUser.setNick(nick);
+				newUser.setNick(filterEmoji(nick));
 				newUser.setOpen(token);
 				newUser.setPhone(phone);
 				newUser.setHead(head);
@@ -506,6 +507,14 @@ public class GameController {
 
 		gameService.addGameResult(gr);
 	}
+	
+	public String filterEmoji(String source) {  
+        if(source!=null){  
+            return source.replaceAll("[\\ud800\\udc00-\\udbff\\udfff\\ud800-\\udfff]", "*");  
+        }else{  
+            return source;  
+        }  
+    }  
 
 	public static void main(String[] args) {
 		Question q = new Question();

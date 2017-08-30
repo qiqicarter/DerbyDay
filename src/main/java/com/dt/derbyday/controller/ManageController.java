@@ -69,7 +69,7 @@ public class ManageController {
 	}
 	
 	@PostMapping("/getGames")
-	public Map<String, Object> getGames(HttpServletRequest request, HttpServletResponse response){
+	public Map<String, Object> getGames(HttpServletRequest request, HttpServletResponse response,@RequestParam(required = false) String sort){
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
@@ -201,16 +201,25 @@ public class ManageController {
 			if(user.equals("admin") && pass.toUpperCase().equals("0192023A7BBD73250516F069DF18B500")) {
 				resultMap.put("data", true);
 				resultMap.put("token", "0192023A7B");
+				resultMap.put("message", "OK");
 			}else {
 				resultMap.put("data", false);
+				resultMap.put("message", "用户名或密码错误");
 			}
 			resultMap.put("code", 200);
-			resultMap.put("message", "OK");
 		} catch (Exception e) {
 			resultMap.put("code", 500);
 			resultMap.put("message", e.getMessage());
 			e.printStackTrace();
 		}
+		return resultMap;
+	}
+	
+	@PostMapping("/exportExcel")
+	public Map<String, Object> exportExcel(@RequestParam(required = false) String game, HttpServletRequest request, HttpServletResponse response){
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
 		return resultMap;
 	}
 }
