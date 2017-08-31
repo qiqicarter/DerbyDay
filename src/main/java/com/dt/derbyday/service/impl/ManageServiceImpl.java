@@ -36,8 +36,8 @@ public class ManageServiceImpl implements ManageService{
 	}
 
 	@Override
-	public List<GameInfo> getGames() {
-		return gameMapper.selectAllGame();
+	public List<GameInfo> getGames(String sort) {
+		return gameMapper.selectAllGame(sort);
 	}
 
 	@Override

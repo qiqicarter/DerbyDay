@@ -69,12 +69,15 @@ public class ManageController {
 	}
 	
 	@PostMapping("/getGames")
-	public Map<String, Object> getGames(HttpServletRequest request, HttpServletResponse response,@RequestParam(required = false) String sort){
+	public Map<String, Object> getGames(HttpServletRequest request, HttpServletResponse response,@RequestParam(required = false) String sort,@RequestParam(required = false) String desc){
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		
+		String sqlOrder = "";
+		if(sort!=null) {
+			sqlOrder = "order by "+sort+" "+desc;
+		}
 		try {
-			List<GameInfo> list = manageService.getGames();
+			List<GameInfo> list = manageService.getGames(sqlOrder);
 			
 			resultMap.put("code", 200);
 			resultMap.put("games", list);

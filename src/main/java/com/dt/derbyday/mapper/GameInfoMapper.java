@@ -20,7 +20,7 @@ public interface GameInfoMapper {
     
     GameInfo selectByTime();
     
-    List<GameInfo> selectAllGame();
+    List<GameInfo> selectAllGame(String sort);
 
     int updateByPrimaryKeySelective(GameInfo record);
 
