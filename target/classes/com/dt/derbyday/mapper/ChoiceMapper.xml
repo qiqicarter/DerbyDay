@@ -1,100 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dt.derbyday.mapper.ChoiceMapper">
-  <resultMap id="BaseResultMap" type="com.dt.derbyday.model.Choice">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="question" jdbcType="INTEGER" property="question" />
-    <result column="choice" jdbcType="VARCHAR" property="choice" />
-    <result column="score" jdbcType="INTEGER" property="score" />
-    <result column="seq" jdbcType="INTEGER" property="seq" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, question, choice, score, seq
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from choice
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  
-  <select id="selectByQuestionId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from choice
-    where question = #{questionId,jdbcType=INTEGER} order by seq
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from choice
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.dt.derbyday.model.Choice">
-    insert into choice (id, question, choice, 
-      score, seq)
-    values (#{id,jdbcType=INTEGER}, #{question,jdbcType=INTEGER}, #{choice,jdbcType=VARCHAR}, 
-      #{score,jdbcType=INTEGER}, #{seq,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" parameterType="com.dt.derbyday.model.Choice">
-    insert into choice
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="question != null">
-        question,
-      </if>
-      <if test="choice != null">
-        choice,
-      </if>
-      <if test="score != null">
-        score,
-      </if>
-      <if test="seq != null">
-        seq,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="question != null">
-        #{question,jdbcType=INTEGER},
-      </if>
-      <if test="choice != null">
-        #{choice,jdbcType=VARCHAR},
-      </if>
-      <if test="score != null">
-        #{score,jdbcType=INTEGER},
-      </if>
-      <if test="seq != null">
-        #{seq,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.dt.derbyday.model.Choice">
-    update choice
-    <set>
-      <if test="question != null">
-        question = #{question,jdbcType=INTEGER},
-      </if>
-      <if test="choice != null">
-        choice = #{choice,jdbcType=VARCHAR},
-      </if>
-      <if test="score != null">
-        score = #{score,jdbcType=INTEGER},
-      </if>
-      <if test="seq != null">
-        seq = #{seq,jdbcType=INTEGER},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.dt.derbyday.model.Choice">
-    update choice
-    set question = #{question,jdbcType=INTEGER},
-      choice = #{choice,jdbcType=VARCHAR},
-      score = #{score,jdbcType=INTEGER},
-      seq = #{seq,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+	<resultMap id="BaseResultMap" type="com.dt.derbyday.model.Choice">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="question" jdbcType="INTEGER" property="question" />
+		<result column="choice" jdbcType="VARCHAR" property="choice" />
+		<result column="score" jdbcType="INTEGER" property="score" />
+		<result column="seq" jdbcType="INTEGER" property="seq" />
+	</resultMap>
+
+	<resultMap id="ChoiceStatisticsMap" type="com.dt.derbyday.dto.ChoiceQueryDto">
+		<id column="qid" jdbcType="INTEGER" property="qid" />
+		<id column="cid" jdbcType="INTEGER" property="cid" />
+		<result column="question" jdbcType="VARCHAR" property="question" />
+		<result column="choice" jdbcType="VARCHAR" property="choice" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, question, choice, score, seq
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from choice
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByQuestionId" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from choice
+		where question = #{questionId,jdbcType=INTEGER} order by seq
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from choice
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.dt.derbyday.model.Choice">
+		insert into choice (id, question, choice,
+		score, seq)
+		values (#{id,jdbcType=INTEGER}, #{question,jdbcType=INTEGER},
+		#{choice,jdbcType=VARCHAR},
+		#{score,jdbcType=INTEGER}, #{seq,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.dt.derbyday.model.Choice">
+		insert into choice
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="question != null">
+				question,
+			</if>
+			<if test="choice != null">
+				choice,
+			</if>
+			<if test="score != null">
+				score,
+			</if>
+			<if test="seq != null">
+				seq,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="question != null">
+				#{question,jdbcType=INTEGER},
+			</if>
+			<if test="choice != null">
+				#{choice,jdbcType=VARCHAR},
+			</if>
+			<if test="score != null">
+				#{score,jdbcType=INTEGER},
+			</if>
+			<if test="seq != null">
+				#{seq,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dt.derbyday.model.Choice">
+		update choice
+		<set>
+			<if test="question != null">
+				question = #{question,jdbcType=INTEGER},
+			</if>
+			<if test="choice != null">
+				choice = #{choice,jdbcType=VARCHAR},
+			</if>
+			<if test="score != null">
+				score = #{score,jdbcType=INTEGER},
+			</if>
+			<if test="seq != null">
+				seq = #{seq,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dt.derbyday.model.Choice">
+		update choice
+		set question = #{question,jdbcType=INTEGER},
+		choice = #{choice,jdbcType=VARCHAR},
+		score = #{score,jdbcType=INTEGER},
+		seq = #{seq,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="selectChoiceStatistics" parameterType="java.lang.String"
+		resultMap="ChoiceStatisticsMap">
+		SELECT
+		q.id AS qid,
+		c.id AS cid,
+		game AS game,
+		q.question AS question,
+		c.choice AS choice
+		FROM
+		`question` AS q
+		LEFT JOIN choice AS c ON q.id = c.question
+		WHERE
+		q.game = #{game,jdbcType=VARCHAR}
+	</select>
 </mapper>

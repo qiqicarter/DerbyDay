@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.dt.derbyday.dto.ChoiceQueryDto;
 import com.dt.derbyday.model.Choice;
 @Repository
 public interface ChoiceMapper {
@@ -20,4 +21,6 @@ public interface ChoiceMapper {
     int updateByPrimaryKeySelective(Choice record);
 
     int updateByPrimaryKey(Choice record);
+    
+    List<ChoiceQueryDto> selectChoiceStatistics(String game);
 }

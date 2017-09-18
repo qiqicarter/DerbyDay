@@ -45,33 +45,32 @@ public class GameController {
 
 	@Autowired
 	private UserService userSerivce;
-	
+
 	@GetMapping("/getOpenIdByCode")
-	public Map<String, Object> getOpenIdByCode(@RequestParam(required = false) String code,
-			@RequestParam(required = false) String game, HttpServletRequest request, HttpServletResponse response) {
+	public Map<String, Object> getOpenIdByCode(@RequestParam(required = false) String code, @RequestParam(required = false) String game, HttpServletRequest request,
+			HttpServletResponse response) {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		String openId = WeixinUtils.getXcxOpenIdByCode(code);
-		if(openId!=null) {
+		if (openId != null) {
 			resultMap.put("code", 200);
 			resultMap.put("message", "OK");
 			resultMap.put("token", openId);
-		}else {
+		} else {
 			resultMap.put("code", 500);
 			resultMap.put("message", "error");
 		}
-		
+
 		return resultMap;
 	}
 
 	@GetMapping("/startGame")
-	public void startGame(@RequestParam(required = false) String game, HttpServletRequest request,
-			HttpServletResponse response) {
+	public void startGame(@RequestParam(required = false) String game, HttpServletRequest request, HttpServletResponse response) {
 		ConfigUtil config = new ConfigUtil();
 		String backUri = config.getProperty("local") + "/game/guessing?game=" + game;
 		backUri = URLEncoder.encode(backUri);
-		String url = "https://open.weixin.qq.com/connect/oauth2/authorize?" + "appid=" + WechatData.APP_ID
-				+ "&redirect_uri=" + backUri + "&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+		String url = "https://open.weixin.qq.com/connect/oauth2/authorize?" + "appid=" + WechatData.APP_ID + "&redirect_uri=" + backUri
+				+ "&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
 
 		try {
 			response.sendRedirect(url);
@@ -81,8 +80,7 @@ public class GameController {
 	}
 
 	// @GetMapping("/guessing")
-	public Map<String, Object> getGame(@RequestParam(required = false) String code,
-			@RequestParam(required = false) String game, HttpServletRequest request, HttpServletResponse response) {
+	public Map<String, Object> getGame(@RequestParam(required = false) String code, @RequestParam(required = false) String game, HttpServletRequest request, HttpServletResponse response) {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -152,12 +150,12 @@ public class GameController {
 	}
 
 	@GetMapping("/guessing")
-	public Map<String, Object> wxAppGetGame(@RequestParam(required = false) String code,HttpServletRequest request, HttpServletResponse response) {
+	public Map<String, Object> wxAppGetGame(@RequestParam(required = false) String code, HttpServletRequest request, HttpServletResponse response) {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
 		try {
-//			GameInfo gameInfo = gameService.getGameInfoByGame(game);
+			// GameInfo gameInfo = gameService.getGameInfoByGame(game);
 			GameInfo gameInfo = gameService.getGameInfoByTime();
 
 			if (gameInfo == null) {
@@ -166,18 +164,18 @@ public class GameController {
 
 				return resultMap;
 			}
-//			if (gameInfo.getStartDate().after(new Date())) {
-//				resultMap.put("code", 500);
-//				resultMap.put("message", "活动尚未开始！");
-//
-//				return resultMap;
-//			}
-//			if (gameInfo.getEndDate().before(new Date())) {
-//				resultMap.put("code", 501);
-//				resultMap.put("message", "活动已经结束！");
-//
-//				return resultMap;
-//			}
+			// if (gameInfo.getStartDate().after(new Date())) {
+			// resultMap.put("code", 500);
+			// resultMap.put("message", "活动尚未开始！");
+			//
+			// return resultMap;
+			// }
+			// if (gameInfo.getEndDate().before(new Date())) {
+			// resultMap.put("code", 501);
+			// resultMap.put("message", "活动已经结束！");
+			//
+			// return resultMap;
+			// }
 
 			// String openId = WeixinUtils.getWechatOpenIdByCode(code);
 			String openId = code;
@@ -185,9 +183,9 @@ public class GameController {
 			UserInfo user = userSerivce.queryUserByOpenId(openId);
 			if (user == null) {
 				// user = WeixinUtils.getUserinfoByOpenId(openId, act);
-//				user = new UserInfo();
-//				user.setOpen(openId);
-//				userSerivce.addUser(user);
+				// user = new UserInfo();
+				// user.setOpen(openId);
+				// userSerivce.addUser(user);
 				resultMap.put("code", 503);
 				resultMap.put("message", "用户不存在！");
 
@@ -219,8 +217,7 @@ public class GameController {
 	}
 
 	@GetMapping("/getChoice")
-	public Map<String, Object> getChoice(@RequestParam(required = false) Integer questionId, HttpServletRequest request,
-			HttpServletResponse response) {
+	public Map<String, Object> getChoice(@RequestParam(required = false) Integer questionId, HttpServletRequest request, HttpServletResponse response) {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -234,8 +231,8 @@ public class GameController {
 	}
 
 	@GetMapping("/submitGame")
-	public Map<String, Object> submitGame(@RequestParam(required = false) String c,
-			@RequestParam(required = false) String token, HttpServletRequest request, HttpServletResponse response) {
+	public Map<String, Object> submitGame(@RequestParam(required = false) String c, @RequestParam(required = false) String token, HttpServletRequest request,
+			HttpServletResponse response) {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		// {"game":"shanghai","choices":[{"question":1,"choice":1},{"question":2,"choice":8}]}
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -259,8 +256,8 @@ public class GameController {
 			resultMap.put("message", "您已经参加过此竞猜！");
 			return resultMap;
 		}
-		
-		if("undefined".equals(game)) {
+
+		if ("undefined".equals(game)) {
 			JSONObject jo = (JSONObject) jsonArray.get(0);
 			int qid = jo.getInteger("question");
 			Question tempQuestion = gameService.getQuestionById(qid);
@@ -296,8 +293,8 @@ public class GameController {
 	}
 
 	@GetMapping("/history")
-	public Map<String, Object> getGameHistory(@RequestParam(required = false) String token,
-			@RequestParam(required = false) String game, HttpServletRequest request, HttpServletResponse response) {
+	public Map<String, Object> getGameHistory(@RequestParam(required = false) String token, @RequestParam(required = false) String game, HttpServletRequest request,
+			HttpServletResponse response) {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -315,9 +312,17 @@ public class GameController {
 		return resultMap;
 	}
 
+	@GetMapping("/statistics")
+	public Map<String, Object> getGameStatistics(@RequestParam(required = false) String game, HttpServletRequest request, HttpServletResponse response) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		
+	}
+
 	@GetMapping("/rank")
-	public Map<String, Object> getGameRank(@RequestParam(required = false) String token,
-			@RequestParam(required = false) String game, HttpServletRequest request, HttpServletResponse response) {
+	public Map<String, Object> getGameRank(@RequestParam(required = false) String token, @RequestParam(required = false) String game, HttpServletRequest request,
+			HttpServletResponse response) {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -336,8 +341,7 @@ public class GameController {
 	}
 
 	@GetMapping("/gameResult")
-	public Map<String, Object> gameResult(@RequestParam(required = false) String c, HttpServletRequest request,
-			HttpServletResponse response) {
+	public Map<String, Object> gameResult(@RequestParam(required = false) String c, HttpServletRequest request, HttpServletResponse response) {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -378,17 +382,16 @@ public class GameController {
 	}
 
 	@GetMapping("/checkUser")
-	public Map<String, Object> checkUser(@RequestParam(required = false) String token, HttpServletRequest request,
-			HttpServletResponse response) {
+	public Map<String, Object> checkUser(@RequestParam(required = false) String token, HttpServletRequest request, HttpServletResponse response) {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
 		try {
 			ConfigUtil config = new ConfigUtil();
 			String color = config.getProperty("bgc");
-			
+
 			resultMap.put("color", color);
-					
+
 			UserInfo user = userSerivce.queryUserByOpenId(token);
 			if (user != null) {
 				resultMap.put("code", 200);
@@ -406,14 +409,12 @@ public class GameController {
 	}
 
 	@GetMapping("/regUser")
-	public Map<String, Object> regUser(@RequestParam(required = false) String token,
-			@RequestParam(required = false) String nick, @RequestParam(required = false) String head,
-			@RequestParam(required = false) String phone, @RequestParam(required = false) String address,
-			HttpServletRequest request, HttpServletResponse response) {
+	public Map<String, Object> regUser(@RequestParam(required = false) String token, @RequestParam(required = false) String nick, @RequestParam(required = false) String head,
+			@RequestParam(required = false) String phone, @RequestParam(required = false) String address, HttpServletRequest request, HttpServletResponse response) {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
-		System.out.println(nick+":"+phone);
+		System.out.println(nick + ":" + phone);
 		try {
 			UserInfo user = userSerivce.queryUserByOpenId(token);
 			if (user == null) {
@@ -424,7 +425,7 @@ public class GameController {
 				newUser.setPhone(phone);
 				newUser.setHead(head);
 				userSerivce.addUser(newUser);
-				
+
 				resultMap.put("code", 200);
 				resultMap.put("message", "OK");
 			} else {
@@ -507,14 +508,14 @@ public class GameController {
 
 		gameService.addGameResult(gr);
 	}
-	
-	public String filterEmoji(String source) {  
-        if(source!=null){  
-            return source.replaceAll("[\\ud800\\udc00-\\udbff\\udfff\\ud800-\\udfff]", "*");  
-        }else{  
-            return source;  
-        }  
-    }  
+
+	public String filterEmoji(String source) {
+		if (source != null) {
+			return source.replaceAll("[\\ud800\\udc00-\\udbff\\udfff\\ud800-\\udfff]", "*");
+		} else {
+			return source;
+		}
+	}
 
 	public static void main(String[] args) {
 		Question q = new Question();
@@ -527,12 +528,12 @@ public class GameController {
 		c.setChoice("c1");
 		c.setScore(2);
 		c.setSeq(1);
-		
+
 		Choice cc = new Choice();
 		cc.setChoice("c2");
 		cc.setScore(2);
 		cc.setSeq(3);
-		
+
 		Choice ccc = new Choice();
 		ccc.setChoice("c3");
 		ccc.setScore(2);
@@ -540,13 +541,13 @@ public class GameController {
 		choices.add(cc);
 		choices.add(c);
 		choices.add(ccc);
-		
+
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		
+
 		resultMap.put("question", q);
 		resultMap.put("choices", choices);
-		
+
 		String jsonString = JSON.toJSONString(resultMap);
-		System.out.println(jsonString+"");
+		System.out.println(jsonString + "");
 	}
 }
