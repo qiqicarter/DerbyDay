@@ -13,7 +13,7 @@ public interface ManageService {
 	
 	void deleteGame(int id);
 	
-	List<GameInfo> getGames();
+	List<GameInfo> getGames(String sort);
 	
 	void createQuestion(Question question);
 	

@@ -33,10 +33,10 @@
     where <![CDATA[ start_date<=NOW() && end_date>=NOW() LIMIT 1 ]]>
   </select>
   
-  <select id="selectAllGame" resultMap="BaseResultMap">
+  <select id="selectAllGame" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from game_info
+    from game_info ${_parameter}
   </select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
