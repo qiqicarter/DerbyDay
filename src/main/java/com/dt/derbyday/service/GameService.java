@@ -3,6 +3,7 @@ package com.dt.derbyday.service;
 import java.util.List;
 
 import com.dt.derbyday.dto.AddScore;
+import com.dt.derbyday.dto.ChoiceQueryDto;
 import com.dt.derbyday.dto.UserChoiceDisplay;
 import com.dt.derbyday.dto.UserScoreDisplay;
 import com.dt.derbyday.model.Choice;
@@ -45,4 +46,10 @@ public interface GameService {
 	void updateUserScore(List<UserChoice> list,int point);
 	
 	void addGameResult(GameResult game);
+	
+	List<ChoiceQueryDto> getChoiceStatistics(String game);
+	
+	int getQuestionCount(Integer question);
+    
+    int getChoiceCount(Integer choice);
 }

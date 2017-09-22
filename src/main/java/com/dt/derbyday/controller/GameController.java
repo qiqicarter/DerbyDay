@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +22,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.dt.derbyday.constant.WechatData;
 import com.dt.derbyday.dto.AddScore;
+import com.dt.derbyday.dto.ChoiceQueryDto;
+import com.dt.derbyday.dto.GameStatisticsChoiceDto;
+import com.dt.derbyday.dto.GameStatisticsQuestionDto;
 import com.dt.derbyday.dto.UserChoiceDisplay;
 import com.dt.derbyday.model.Choice;
 import com.dt.derbyday.model.GameInfo;
@@ -316,8 +318,50 @@ public class GameController {
 	public Map<String, Object> getGameStatistics(@RequestParam(required = false) String game, HttpServletRequest request, HttpServletResponse response) {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		
-		
+		List<ChoiceQueryDto> cqdl = gameService.getChoiceStatistics(game);
+		Map<String, List<Choice>> map1 = new HashMap<String, List<Choice>>();
+		for (ChoiceQueryDto dto : cqdl) {
+			Choice c = new Choice();
+			c.setId(dto.getCid());
+			c.setQuestion(dto.getQid());
+			c.setChoice(dto.getChoice());
+
+			if (map1.get(dto.getQuestion()) == null) {
+				List<Choice> list = new ArrayList<Choice>();
+				list.add(c);
+				map1.put(dto.getQuestion(), list);
+			} else {
+				List<Choice> list = map1.get(dto.getQuestion());
+				list.add(c);
+				map1.put(dto.getQuestion(), list);
+			}
+		}
+
+		List<GameStatisticsQuestionDto> resList = new ArrayList<GameStatisticsQuestionDto>();
+		for (Map.Entry<String, List<Choice>> entry : map1.entrySet()) {
+			int questionTotal = 0;
+			GameStatisticsQuestionDto gsqd = new GameStatisticsQuestionDto();
+			List<GameStatisticsChoiceDto> gscdl = new ArrayList<GameStatisticsChoiceDto>();
+			gsqd.setQuestion(entry.getKey());
+			for (Choice c : entry.getValue()) {
+				if (questionTotal == 0)
+					questionTotal = gameService.getQuestionCount(c.getQuestion());
+				int choiceTotal = gameService.getChoiceCount(c.getId());
+				GameStatisticsChoiceDto gsc = new GameStatisticsChoiceDto();
+				gsc.setTitle(c.getChoice());
+				gsc.setPercent(choiceTotal * 100 / questionTotal + "%");
+				gsc.setTotal(choiceTotal + "");
+				gscdl.add(gsc);
+			}
+			gsqd.setChoices(gscdl);
+
+			resList.add(gsqd);
+		}
+
+		resultMap.put("code", 200);
+		resultMap.put("message", "OK");
+		resultMap.put("data", resList);
+		return resultMap;
 	}
 
 	@GetMapping("/rank")

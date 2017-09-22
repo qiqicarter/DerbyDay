@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dt.derbyday.dto.AddScore;
+import com.dt.derbyday.dto.ChoiceQueryDto;
 import com.dt.derbyday.dto.UserChoiceDisplay;
 import com.dt.derbyday.dto.UserScoreDisplay;
 import com.dt.derbyday.mapper.ChoiceMapper;
@@ -121,5 +122,20 @@ public class GameServiceImpl implements GameService {
 	@Override
 	public Question getQuestionById(Integer questionId) {
 		return questionMapper.selectByPrimaryKey(questionId);
+	}
+
+	@Override
+	public List<ChoiceQueryDto> getChoiceStatistics(String game) {
+		return choiceMapper.selectChoiceStatistics(game);
+	}
+
+	@Override
+	public int getQuestionCount(Integer question) {
+		return userChoiceMapper.selectQuestionCount(question);
+	}
+
+	@Override
+	public int getChoiceCount(Integer choice) {
+		return userChoiceMapper.selectChoiceCount(choice);
 	}
 }

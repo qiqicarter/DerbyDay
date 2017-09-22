@@ -28,4 +28,8 @@ public interface UserChoiceMapper {
     int updateByPrimaryKeySelective(UserChoice record);
 
     int updateByPrimaryKey(UserChoice record);
+    
+    int selectQuestionCount(Integer question);
+    
+    int selectChoiceCount(Integer choice);
 }

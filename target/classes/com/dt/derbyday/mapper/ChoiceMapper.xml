@@ -114,7 +114,6 @@
 		SELECT
 		q.id AS qid,
 		c.id AS cid,
-		game AS game,
 		q.question AS question,
 		c.choice AS choice
 		FROM
